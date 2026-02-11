@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="main-grad-verbal" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34d399;stop-opacity:1" />
+    </linearGradient>
+    <style>
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(-15deg); }
+        50% { transform: translateY(-10px) rotate(-10deg); }
+      }
+      @keyframes float-reverse {
+        0%, 100% { transform: translateY(0) rotate(15deg); }
+        50% { transform: translateY(-10px) rotate(20deg); }
+      }
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+      .letter-a { animation: float 4s ease-in-out infinite; transform-origin: center; }
+      .letter-z { animation: float-reverse 5s ease-in-out infinite; transform-origin: center; }
+      .main-group { transform: translate(400px, 300px); }
+      .bubble { animation: pulse 3s ease-in-out infinite; transform-origin: center; }
+    </style>
+  </defs>
+  
+  <rect width="800" height="600" fill="none" />
+  
+  <g class="main-group">
+    <!-- Central Book/Speech Bubble -->
+    <circle cx="0" cy="0" r="70" fill="url(#main-grad-verbal)" opacity="0.1" class="bubble" />
+    <rect x="-40" y="-50" width="80" height="100" rx="10" fill="url(#main-grad-verbal)" />
+    <path d="M-30 -30 L30 -30 M-30 0 L30 0 M-30 30 L10 30" stroke="white" stroke-width="6" stroke-linecap="round" />
+    
+    <!-- Floating Letters/Icons -->
+    <g font-family="serif" font-weight="bold" font-size="40" fill="#059669">
+      <text x="-100" y="-80" class="letter-a">A</text>
+      <text x="100" y="80" class="letter-z">Z</text>
+      <text x="120" y="-60" transform="rotate(10)">?</text>
+      <text x="-120" y="60" transform="rotate(-10)">!</text>
+    </g>
+    
+    <!-- Decorative Elements -->
+    <circle cx="-80" cy="-20" r="10" fill="#34d399" opacity="0.6" />
+    <circle cx="90" cy="20" r="8" fill="#34d399" opacity="0.6" />
+    <path d="M-60 90 Q 0 140 60 90" stroke="#cbd5e1" stroke-width="3" fill="none" stroke-dasharray="6 4"/>
+  </g>
+  
+  <text x="400" y="550" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#475569" font-weight="bold" letter-spacing="2">VERBAL ABILITY</text>
+</svg>

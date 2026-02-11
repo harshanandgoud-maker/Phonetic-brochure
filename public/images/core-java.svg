@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="main-grad-java" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    <style>
+      @keyframes steam {
+        0% { transform: translateY(0) scale(1); opacity: 0.8; }
+        50% { transform: translateY(-10px) scale(1.1); opacity: 0.4; }
+        100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
+      }
+      .steam-1 { animation: steam 2s ease-out infinite; }
+      .steam-2 { animation: steam 2s ease-out infinite 0.6s; }
+      .steam-3 { animation: steam 2s ease-out infinite 1.2s; }
+      .main-group { transform: translate(400px, 300px); }
+    </style>
+  </defs>
+  
+  <rect width="800" height="600" fill="none" />
+  
+  <g class="main-group">
+    <!-- Cup/Java Concept -->
+    <path d="M-40 -20 Q -40 40 0 50 Q 40 40 40 -20" fill="url(#main-grad-java)" />
+    <path d="M40 -10 Q 60 -10 60 5 Q 60 20 40 15" stroke="url(#main-grad-java)" stroke-width="8" fill="none"/>
+    
+    <!-- Steam / Code -->
+    <path d="M-10 -40 Q 0 -60 10 -40" stroke="#f87171" stroke-width="4" fill="none" class="steam-1"/>
+    <path d="M-25 -50 Q -15 -70 -5 -50" stroke="#f87171" stroke-width="4" fill="none" class="steam-2"/>
+    <path d="M5 -50 Q 15 -70 25 -50" stroke="#f87171" stroke-width="4" fill="none" class="steam-3"/>
+    
+    <!-- OOP Nodes -->
+    <rect x="-90" y="50" width="40" height="40" rx="4" fill="#ef4444" opacity="0.5"/>
+    <rect x="50" y="50" width="40" height="40" rx="4" fill="#ef4444" opacity="0.5"/>
+    <rect x="-90" y="-80" width="40" height="40" rx="4" fill="#ef4444" opacity="0.5"/>
+    <rect x="50" y="-80" width="40" height="40" rx="4" fill="#ef4444" opacity="0.5"/>
+    
+    <!-- Connecting lines -->
+    <line x1="-50" y1="-60" x2="-20" y2="-20" stroke="#b91c1c" stroke-width="2" stroke-dasharray="4 4"/>
+    <line x1="50" y1="-60" x2="20" y2="-20" stroke="#b91c1c" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+  
+  <text x="400" y="550" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#475569" font-weight="bold" letter-spacing="2">CORE JAVA</text>
+</svg>

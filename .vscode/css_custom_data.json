@@ -1,0 +1,41 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@custom-variant",
+      "description": "Defines a custom variant in Tailwind CSS v4."
+    },
+    {
+      "name": "@theme",
+      "description": "Defines the theme configuration in Tailwind CSS v4."
+    },
+    {
+      "name": "@utility",
+      "description": "Defines a custom utility in Tailwind CSS v4."
+    },
+    {
+      "name": "@plugin",
+      "description": "Imports a plugin in Tailwind CSS v4."
+    },
+    {
+      "name": "@source",
+      "description": "Configures source detection in Tailwind CSS v4."
+    },
+    {
+      "name": "@variant",
+      "description": "Defines a custom variant in Tailwind CSS v4."
+    },
+    {
+      "name": "@reference",
+      "description": "Imports a theme reference in Tailwind CSS v4."
+    },
+    {
+      "name": "@apply",
+      "description": "Applies utility classes to CSS selectors."
+    },
+    {
+      "name": "@config",
+      "description": "Specifies a configuration file."
+    }
+  ]
+}

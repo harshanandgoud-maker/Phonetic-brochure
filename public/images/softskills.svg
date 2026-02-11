@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="main-grad-soft" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    <style>
+      @keyframes chat-pop {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+      @keyframes twinkle {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.8); }
+      }
+      .bubble-left { animation: chat-pop 3s ease-in-out infinite; transform-origin: -35px -65px; }
+      .bubble-right { animation: chat-pop 3s ease-in-out infinite 1.5s; transform-origin: 35px -65px; }
+      .star-group { animation: twinkle 2s linear infinite; transform-origin: top center; }
+      .main-group { transform: translate(400px, 300px); }
+    </style>
+  </defs>
+  
+  <rect width="800" height="600" fill="none" />
+  
+  <g class="main-group">
+    <!-- People/Interaction -->
+    <circle cx="0" cy="-20" r="30" fill="url(#main-grad-soft)" />
+    <path d="M-30 20 Q 0 50 30 20 V 60 H -30 Z" fill="url(#main-grad-soft)" />
+    
+    <circle cx="-60" cy="0" r="20" fill="#a78bfa" />
+    <path d="M-80 30 Q -60 50 -40 30 V 60 H -80 Z" fill="#a78bfa" />
+    
+    <circle cx="60" cy="0" r="20" fill="#a78bfa" />
+    <path d="M40 30 Q 60 50 80 30 V 60 H 40 Z" fill="#a78bfa" />
+    
+    <!-- Speech Bubbles (Communication) -->
+    <g class="bubble-right">
+      <path d="M20 -50 L 50 -80 H 90 V -40 H 50 L 20 -50" fill="#ddd6fe" />
+    </g>
+    <g class="bubble-left">
+      <path d="M-20 -50 L -50 -80 H -90 V -40 H -50 L -20 -50" fill="#ddd6fe" />
+    </g>
+    
+    <!-- Stars/Sparkles -->
+    <g class="star-group">
+      <path d="M0 -100 L 5 -90 L 15 -90 L 7 -82 L 10 -72 L 0 -80 L -10 -72 L -7 -82 L -15 -90 L -5 -90 Z" fill="#fbbf24" />
+    </g>
+  </g>
+  
+  <text x="400" y="550" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#475569" font-weight="bold" letter-spacing="2">SOFTSKILLS</text>
+</svg>
