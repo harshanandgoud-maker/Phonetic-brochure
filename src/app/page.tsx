@@ -26,43 +26,7 @@ import {
   LensFlare,
 } from "@/components/ui/cinematic-effects";
 
-const cinematicPageReveal = {
-  initial: {
-    opacity: 0,
-    scale: 1.2,
-    filter: "blur(50px) brightness(0)",
-  },
-  animate: {
-    opacity: 1,
-    scale: 1,
-    filter: "blur(0px) brightness(1)",
-    transition: {
-      duration: 2.5,
-      ease: [0.16, 1, 0.3, 1] as const,
-    },
-  },
-  exit: {
-    opacity: 0,
-    scale: 0.9,
-    filter: "blur(30px) brightness(2)",
-    transition: {
-      duration: 1.2,
-      ease: [0.16, 1, 0.3, 1] as const,
-    },
-  },
-};
 
-const introExit = {
-  exit: {
-    opacity: 0,
-    scale: 1.2,
-    filter: "blur(40px) brightness(3)",
-    transition: {
-      duration: 1.2,
-      ease: [0.16, 1, 0.3, 1] as const,
-    },
-  },
-};
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
