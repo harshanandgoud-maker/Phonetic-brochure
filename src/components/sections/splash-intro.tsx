@@ -66,7 +66,7 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-100 flex flex-col items-center justify-center overflow-hidden bg-white"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-white"
         >
           <div className="relative flex aspect-video h-full w-full max-w-5xl flex-col items-center justify-center px-4">
             <video

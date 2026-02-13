@@ -56,7 +56,7 @@ export default function Home() {
                 opacity: 0, 
                 transition: { duration: 1, ease: "easeInOut" } 
               }}
-              className="fixed inset-0 z-99999"
+              className="fixed inset-0 z-[99999]"
             >
               <SplashIntro onComplete={handleIntroComplete} />
             </motion.div>
