@@ -88,7 +88,7 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-white"
+          className="fixed inset-0 z-[5000] flex items-center justify-center overflow-hidden bg-white"
         >
           <video
             ref={videoRef}
@@ -161,16 +161,6 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
                   Skip Intro
                 </motion.button>
              </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="absolute bottom-0 left-0 h-1 w-full bg-black/5 z-20">
-            <motion.div
-              className="h-full bg-black"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ ease: "linear", duration: 0.25 }}
-            />
           </div>
 
           {/* Background Text Elements (Behind video? No, overlay if needed, but video covers screen now) */}
