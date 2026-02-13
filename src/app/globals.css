@@ -130,12 +130,6 @@
     line-height: 1.6;
     overflow-x: hidden;
     width: 100%;
-    
-    /* PERFORMANCE: Force GPU layer */
-    backface-visibility: hidden;
-    transform: translateZ(0);
-    will-change: transform; 
-    contain: paint layout;
   }
 
   h1,
