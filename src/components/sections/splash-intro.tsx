@@ -96,10 +96,10 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
             muted
             playsInline
             preload="auto"
-            className="absolute inset-0 h-full w-full object-cover cursor-pointer"
+            className="absolute inset-0 h-full w-full object-cover bg-white cursor-pointer"
             onClick={toggleCreate}
           >
-            <source src="/intro-video.mp4" type="video/mp4" />
+            <source src="/intro-video.mp4?v=3" type="video/mp4" />
           </video>
 
           {/* Play Button Overlay (Visible only when paused) */}
