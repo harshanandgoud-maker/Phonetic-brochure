@@ -466,13 +466,17 @@ export function FloatingParticles({
 }) {
   const [mounted, setMounted] = useState(false);
 
+  const [particleCount, setParticleCount] = useState(0);
+
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    setParticleCount(isMobile ? Math.min(count, 15) : count);
     setMounted(true);
-  }, []);
+  }, [count]);
 
   const particles = useMemo(() => {
-    if (!mounted) return [];
-    return Array.from({ length: count }, (_, i) => ({
+    if (!mounted || particleCount === 0) return [];
+    return Array.from({ length: particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -481,7 +485,7 @@ export function FloatingParticles({
       delay: Math.random() * 10,
       randomX: Math.random() * 50 - 25, // Stable random X-shift
     }));
-  }, [count, minSize, maxSize, mounted]);
+  }, [particleCount, minSize, maxSize, mounted]);
 
   if (!mounted) return null;
 
@@ -521,13 +525,17 @@ export function FloatingParticles({
 export function GlowingOrbs({ count = 5, className = "" }: { count?: number; className?: string }) {
   const [mounted, setMounted] = useState(false);
 
+  const [orbCount, setOrbCount] = useState(0);
+
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    setOrbCount(isMobile ? Math.min(count, 2) : count);
     setMounted(true);
-  }, []);
+  }, [count]);
 
   const orbs = useMemo(() => {
-    if (!mounted) return [];
-    return Array.from({ length: count }, (_, i) => ({
+    if (!mounted || orbCount === 0) return [];
+    return Array.from({ length: orbCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -536,7 +544,7 @@ export function GlowingOrbs({ count = 5, className = "" }: { count?: number; cla
       delay: Math.random() * 5,
       color: i % 2 === 0 ? "rgba(37, 99, 235, 0.15)" : "rgba(99, 102, 241, 0.1)",
     }));
-  }, [count, mounted]);
+  }, [orbCount, mounted]);
 
   if (!mounted) return null;
 
