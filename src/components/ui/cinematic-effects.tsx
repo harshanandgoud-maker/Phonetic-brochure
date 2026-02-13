@@ -86,7 +86,7 @@ export function MagneticCursor({ children }: MagneticCursorProps) {
       {children}
       <motion.div
         ref={cursorRef}
-        className="pointer-events-none fixed top-0 left-0 z-[99999] hidden md:block"
+        className="pointer-events-none fixed top-0 left-0 z-99999 hidden md:block"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
