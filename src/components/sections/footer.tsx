@@ -190,7 +190,7 @@ const Footer = () => {
                     alt="PHONETIC Logo"
                     fill
                     sizes="40px"
-                    className="object-contain mix-blend-lighten brightness-200 grayscale"
+                    className="object-contain invert grayscale brightness-200 mix-blend-screen"
                   />
                 </div>
               </div>
