@@ -186,11 +186,11 @@ const Footer = () => {
               <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden">
                 <div className="relative h-full w-full">
                   <Image
-                    src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/2897df09-0070-4f38-8117-82d9d8b58194/WhatsApp-Image-2026-01-15-at-17.25.12-1768478648732.jpeg?width=128&height=128&resize=contain"
+                    src="/images/phonetic-logo-new.png"
                     alt="PHONETIC Logo"
                     fill
                     sizes="40px"
-                    className="object-contain invert grayscale brightness-200 mix-blend-screen"
+                    className="object-contain" // Removing color filters to show original logo
                   />
                 </div>
               </div>

@@ -49,11 +49,11 @@ export default function Navbar() {
               <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden transition-transform duration-300 select-none">
                 <div className="relative h-full w-full">
                   <Image
-                    src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/2897df09-0070-4f38-8117-82d9d8b58194/c2d46c3d-75bb-4ca5-9748-88bd5831cc31-1768408018758.jpg?width=128&height=128&resize=contain"
+                    src="/images/phonetic-logo-new.png"
                     alt="PHONETIC Logo"
                     fill
                     sizes="40px"
-                    className="object-contain mix-blend-multiply"
+                    className="object-contain"
                     priority
                   />
                 </div>
