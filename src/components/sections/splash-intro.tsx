@@ -12,6 +12,7 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
   const [isExiting, setIsExiting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const handleComplete = useCallback(() => {
     setIsExiting(true);
@@ -24,18 +25,26 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Fallback timer: if video doesn't end or load within 6s, proceed anyway
+    // Fallback timer
     const fallbackTimer = setTimeout(() => {
       handleComplete();
-    }, 6000);
+    }, 8000); // Extended to 8s
 
-    // Must start muted to autoplay (browser policy)
+    // Attempt autoplay
     video.muted = true;
     setIsMuted(true);
-    video.play().catch(() => {
-      // Retry if needed
-      video.play().catch(() => {});
-    });
+    
+    const playVideo = async () => {
+      try {
+        await video.play();
+        setIsPlaying(true);
+      } catch (err) {
+        console.warn("Autoplay blocked/failed:", err);
+        setIsPlaying(false);
+      }
+    };
+    
+    playVideo();
 
     const handleTimeUpdate = () => {
       if (video.duration) {
@@ -51,6 +60,8 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
 
     video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("ended", handleEnded);
+    video.addEventListener("play", () => setIsPlaying(true));
+    video.addEventListener("pause", () => setIsPlaying(false));
 
     return () => {
       clearTimeout(fallbackTimer);
@@ -59,6 +70,17 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
     };
   }, [handleComplete]);
 
+  const toggleCreate = () => {
+      const video = videoRef.current;
+      if (!video) return;
+      
+      if (video.paused) {
+          video.play();
+      } else {
+          video.pause();
+      }
+  };
+
   return (
     <AnimatePresence>
       {!isExiting && (
@@ -66,7 +88,7 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-white"
+          className="absolute inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-white"
         >
           <div className="relative flex aspect-video h-full w-full max-w-5xl flex-col items-center justify-center px-4">
             <video
@@ -74,11 +96,27 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
               autoPlay
               muted
               playsInline
-              className="h-full w-full object-contain"
+              preload="auto"
+              className="h-full w-full object-contain cursor-pointer"
+              onClick={toggleCreate}
             >
               <source src="/intro-video.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
             </video>
+
+            {/* Play Button Overlay (Visible only when paused) */}
+            {!isPlaying && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.1 }}
+                onClick={() => videoRef.current?.play()}
+                className="absolute z-20 flex h-20 w-20 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-md transition-colors hover:bg-black/40"
+              >
+                 <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                 </svg>
+              </motion.button>
+            )}
 
             {/* Mute/Unmute Button */}
             <motion.button
@@ -94,8 +132,7 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
                   setIsMuted(video.muted);
                 }
               }}
-              className="absolute bottom-12 left-12 z-10 rounded-full border border-black/10 bg-white/50 p-3 text-black/60 backdrop-blur-sm transition-colors hover:bg-black hover:text-white"
-              aria-label={isMuted ? "Unmute" : "Mute"}
+              className="absolute bottom-12 left-12 z-20 rounded-full border border-black/10 bg-white/50 p-3 text-black/60 backdrop-blur-sm transition-colors hover:bg-black hover:text-white"
             >
               {isMuted ? (
                 <svg
@@ -125,9 +162,9 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                   <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                   <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                   <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
                 </svg>
               )}
             </motion.button>
@@ -140,7 +177,7 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleComplete}
-              className="absolute right-12 bottom-12 z-10 rounded-full border border-black/10 bg-white/50 px-6 py-2 text-sm font-medium text-black/60 backdrop-blur-sm transition-colors hover:bg-black hover:text-white"
+              className="absolute right-12 bottom-12 z-20 rounded-full border border-black/10 bg-white/50 px-6 py-2 text-sm font-medium text-black/60 backdrop-blur-sm transition-colors hover:bg-black hover:text-white"
             >
               Skip Intro
             </motion.button>
@@ -156,7 +193,6 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
             </div>
           </div>
 
-          {/* Background Text Elements for Aesthetic */}
           <div className="pointer-events-none absolute top-20 left-20 opacity-[0.02] select-none">
             <span className="text-[12vw] font-black tracking-tighter uppercase italic">
               PHONETIC
