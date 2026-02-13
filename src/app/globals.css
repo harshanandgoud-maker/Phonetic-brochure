@@ -1,4 +1,4 @@
-/* Tailwind CSS v4 Configuration - Warnings for @theme and @custom-variant are safe to ignore */
+/* Tailwind CSS v4 Configuration */
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -119,6 +119,8 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* scroll-behavior: smooth; -- Handled by JS or removed for performance control if needed, but keeping standard is fine */
+    text-rendering: optimizeLegibility;
   }
 
   body {
@@ -127,6 +129,13 @@
     font-family: var(--font-sans);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
+    
+    /* PERFORMANCE: Force GPU layer */
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform; 
+    contain: paint layout;
   }
 
   h1,
@@ -149,19 +158,10 @@
     padding-right: 2rem;
     padding-left: 2rem;
     max-width: 1280px;
+    contain: layout style;
   }
 
-  .font-display-extended {
-    font-family: var(--font-display);
-    font-weight: 900;
-    letter-spacing: -0.06em;
-    line-height: 0.9;
-  }
-
-  .text-muted {
-    color: var(--muted-foreground);
-  }
-
+  /* Optimized: Removed noise overlay if not critical, or use static image */
   .noise-overlay {
     position: fixed;
     inset: 0;
@@ -169,39 +169,27 @@
     opacity: 0.02;
     z-index: var(--z-9999);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    transform: translateZ(0);
   }
 
   .glow-blob {
     position: absolute;
     width: 700px;
     height: 700px;
-    /* Performance optimization: Use a soft gradient instead of a heavy blur filter */
+    /* Performance: Soft gradient instead of blur */
     background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, rgba(37, 99, 235, 0) 60%);
     border-radius: 50%;
     z-index: -1;
-    will-change: transform; /* Hint to browser to promote to layer */
+    will-change: transform;
+    transform: translateZ(0);
   }
-
-  /* Consolidated Utility Classes */
-  .perspective-2000 {
-    perspective: 2000px;
-  }
-
-  .perspective-3000 {
-    perspective: 3000px;
-  }
-
-  .perspective-1500 {
-    perspective: 1500px;
-  }
-
-  .preserve-3d {
-    transform-style: preserve-3d;
-  }
-
-  .char {
-    display: inline-block;
-  }
+  
+  /* Utilities */
+  .perspective-2000 { perspective: 2000px; }
+  .perspective-3000 { perspective: 3000px; }
+  .perspective-1500 { perspective: 1500px; }
+  .preserve-3d { transform-style: preserve-3d; }
+  .char { display: inline-block; }
 
   ::selection {
     background-color: rgba(37, 99, 235, 0.2);
@@ -210,6 +198,12 @@
 }
 
 @layer utilities {
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
   @supports (text-wrap: balance) {
     .text-balance {
       text-wrap: balance;
@@ -223,30 +217,23 @@
   .section-padding {
     padding-top: clamp(100px, 12vw, 200px);
     padding-bottom: clamp(100px, 12vw, 200px);
-  }
-
-  @supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
-    .glass-nav {
-      -webkit-backdrop-filter: blur(20px);
-      backdrop-filter: blur(20px);
-    }
+    contain: content;
   }
 
   .glass-nav {
     background: rgba(255, 255, 255, 0.85);
     border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    will-change: transform;
   }
 
   .cinematic-shadow {
-    box-shadow:
-      0 50px 100px -20px rgba(0, 0, 0, 0.15),
-      0 30px 60px -30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.15), 0 30px 60px -30px rgba(0, 0, 0, 0.2);
   }
 
   .cinematic-shadow-primary {
-    box-shadow:
-      0 50px 100px -20px rgba(37, 99, 235, 0.3),
-      0 30px 60px -30px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 50px 100px -20px rgba(37, 99, 235, 0.3), 0 30px 60px -30px rgba(37, 99, 235, 0.4);
   }
 
   .text-gradient {
@@ -256,93 +243,73 @@
     background-clip: text;
   }
 
+  /* PERFORMANCE: Only animate transform */
   .hover-lift {
-    transition:
-      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+    will-change: transform;
   }
-
   .hover-lift:hover {
-    transform: translateY(-12px) scale(1.02);
+    transform: translateY(-8px) scale(1.01);
   }
 
   .animate-float {
     animation: float 6s ease-in-out infinite;
+    will-change: transform;
   }
 
   @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-20px) rotate(2deg);
-    }
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
   }
 
   .animate-pulse-glow {
     animation: pulse-glow 4s ease-in-out infinite;
+    will-change: transform, opacity;
   }
 
   @keyframes pulse-glow {
-    0%,
-    100% {
-      opacity: 0.5;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.8;
-      transform: scale(1.1);
-    }
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
   }
 
-  @supports (mask-image: linear-gradient(to bottom, black 80%, transparent 100%)) or
-    (-webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%)) {
+  @supports (mask-image: linear-gradient(to bottom, black 80%, transparent 100%)) {
     .mask-gradient-b {
       -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
       mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
     }
   }
 
-  @supports (mask-image: linear-gradient(to top, black 80%, transparent 100%)) or
-    (-webkit-mask-image: linear-gradient(to top, black 80%, transparent 100%)) {
+  @supports (mask-image: linear-gradient(to top, black 80%, transparent 100%)) {
     .mask-gradient-t {
       -webkit-mask-image: linear-gradient(to top, black 80%, transparent 100%);
       mask-image: linear-gradient(to top, black 80%, transparent 100%);
     }
   }
 
-  .origin-left {
-    transform-origin: left center;
-  }
-
-  .origin-right {
-    transform-origin: right center;
-  }
+  .origin-left { transform-origin: left center; }
+  .origin-right { transform-origin: right center; }
 
   .focus-tag-overlay {
     z-index: var(--z-top);
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
   }
 
   .visual-edits-hover-box {
     z-index: var(--z-overlay);
-    top: 0;
-    left: 0;
-    /* Optimization: Removed width/height transition in favor of transform */
+    top: 0; left: 0;
     width: var(--hover-width);
     height: var(--hover-height);
     transform: translate3d(var(--hover-x), var(--hover-y), 0);
     will-change: transform;
+    pointer-events: none;
   }
 
   .visual-edits-hover-label {
     z-index: var(--z-label);
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     transform: translate3d(var(--hover-x), calc(var(--hover-y) - 20px), 0);
     will-change: transform;
+    pointer-events: none;
   }
 
   .translate-z-50 {
@@ -351,31 +318,13 @@
 }
 
 @media (min-width: 768px) {
-  body,
-  a,
-  button,
-  [role="button"],
-  select,
-  label {
+  body, a, button, [role="button"], select, label {
     cursor: none !important;
   }
-
-  /* Restore system cursor for text inputs for better UX, avoiding buttons/checkboxes */
-  input[type="text"],
-  input:not([type]),
-  input[type="email"],
-  input[type="password"],
-  input[type="number"],
-  input[type="search"],
-  input[type="tel"],
-  input[type="url"],
-  input[type="date"],
-  input[type="datetime-local"],
-  input[type="month"],
-  input[type="time"],
-  input[type="week"],
-  textarea,
-  [contenteditable="true"] {
+  input[type="text"], input:not([type]), input[type="email"], input[type="password"],
+  input[type="number"], input[type="search"], input[type="tel"], input[type="url"],
+  input[type="date"], input[type="datetime-local"], input[type="month"], input[type="time"],
+  input[type="week"], textarea, [contenteditable="true"] {
     cursor: text !important;
   }
 }

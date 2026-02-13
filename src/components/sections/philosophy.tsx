@@ -71,15 +71,15 @@ const PhilosophySection: React.FC = () => {
         style={{ y, scale, rotateX }}
       >
         <motion.div
-          className="philosophy-badge border-primary/20 text-primary mb-16 rounded-full border bg-white px-8 py-3 text-[11px] font-bold tracking-[0.3em] uppercase shadow-lg"
+          className="philosophy-badge border-primary/20 text-primary mb-16 rounded-full border bg-white px-8 py-3 text-[11px] font-bold tracking-[0.3em] uppercase shadow-lg gpu-accelerated"
           variants={cinematicFadeIn}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
           whileHover={{
             scale: 1.1,
-            boxShadow: "0 20px 40px -10px rgba(37, 99, 235, 0.3)",
           }}
+          style={{ willChange: "transform" }}
         >
           Our Core Philosophy
         </motion.div>
@@ -101,11 +101,9 @@ const PhilosophySection: React.FC = () => {
                   scale: 1.15,
                   rotateY: word.highlight ? 10 : -10,
                   rotateX: -5,
-                  textShadow: word.highlight
-                    ? "0 30px 60px rgba(37, 99, 235, 0.4)"
-                    : "0 30px 60px rgba(0, 0, 0, 0.2)",
                   transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
                 }}
+                style={{ willChange: "transform" }}
               >
                 {word.text}
               </motion.span>

@@ -9,7 +9,7 @@ export default function SmoothScrolling({ children }: { children: React.ReactNod
   useEffect(() => {
     // Initialize Lenis with smooth settings
     const lenis = new Lenis({
-      duration: 1.8,
+      duration: 1.5, // Slightly faster for better responsiveness
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential easing for a more natural stop
       orientation: "vertical",
       gestureOrientation: "vertical",
@@ -21,15 +21,19 @@ export default function SmoothScrolling({ children }: { children: React.ReactNod
     lenisRef.current = lenis;
 
     // Use requestAnimationFrame to link Lenis update to the render loop
+    let rafId: number;
+
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 

@@ -170,16 +170,16 @@ const MissionStatement = () => {
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className="group preserve-3d relative rounded-[2.5rem] border border-black/5 bg-white p-10 text-center"
+              className="group preserve-3d relative rounded-[2.5rem] border border-black/5 bg-white p-10 text-center gpu-accelerated"
               variants={cardReveal3D}
               whileHover={{
                 y: -20,
                 scale: 1.08,
                 rotateX: -8,
                 rotateY: index === 0 ? -8 : index === 3 ? 8 : 0,
-                boxShadow: "0 50px 100px -20px rgba(37, 99, 235, 0.3)",
                 transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
               }}
+              style={{ willChange: "transform" }}
             >
               <motion.div
                 className="bg-primary/10 group-hover:bg-primary mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-500"

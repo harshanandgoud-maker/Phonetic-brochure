@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import Image from "next/image";
 import {
   motion,
   useMotionValue,
@@ -12,6 +13,8 @@ import {
   MotionValue,
 } from "framer-motion";
 import { CINEMATIC_EASE, SHOPIFY_EASE } from "@/lib/animations";
+
+const MotionImage = motion.create(Image);
 
 interface MagneticCursorProps {
   children?: React.ReactNode;
@@ -36,39 +39,43 @@ export function MagneticCursor({ children }: MagneticCursorProps) {
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
+    };
+    
+    // Use event delegation for hover states instead of expensive elementFromPoint
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      
+      const clickable = target.closest(
+        "a, button, [data-cursor-hover], input, textarea, select, [role='button']"
+      );
+      const textInput = target.closest(
+        "input[type='text'], input:not([type]), input[type='email'], input[type='password'], input[type='number'], input[type='search'], input[type='tel'], input[type='url'], input[type='date'], input[type='datetime-local'], input[type='month'], input[type='time'], input[type='week'], textarea, [contenteditable='true']"
+      );
 
-      const target = document.elementFromPoint(e.clientX, e.clientY);
-      if (target) {
-        const clickable = target.closest(
-          "a, button, [data-cursor-hover], input, textarea, select, [role='button']"
-        );
-        const textInput = target.closest(
-          "input[type='text'], input:not([type]), input[type='email'], input[type='password'], input[type='number'], input[type='search'], input[type='tel'], input[type='url'], input[type='date'], input[type='datetime-local'], input[type='month'], input[type='time'], input[type='week'], textarea, [contenteditable='true']"
-        );
+      const isInteractive = !!clickable;
+      const shouldHide = !!textInput;
 
-        const isInteractive = !!clickable;
-        const shouldHide = !!textInput;
+      setIsHovering(isInteractive);
+      setIsHidden(shouldHide);
 
-        setIsHovering(isInteractive);
-        setIsHidden(shouldHide);
-
-        if (isInteractive && clickable) {
-          const cursorTextAttr = clickable.getAttribute("data-cursor-text") || "";
-          setCursorText(cursorTextAttr);
-        } else {
-          setCursorText("");
-        }
+      if (isInteractive && clickable) {
+        const cursorTextAttr = clickable.getAttribute("data-cursor-text") || "";
+        setCursorText(cursorTextAttr);
       } else {
-        setIsHidden(true);
+        setCursorText("");
       }
     };
 
     window.addEventListener("mousemove", moveCursor, { passive: true });
+    // Use capture phase to ensure we catch events
+    document.addEventListener("mouseover", handleMouseOver, { passive: true });
+    
     window.addEventListener("mouseleave", () => setIsHidden(true));
     window.addEventListener("mouseenter", () => setIsHidden(false));
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
+      document.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("mouseleave", () => setIsHidden(true));
       window.removeEventListener("mouseenter", () => setIsHidden(false));
     };
@@ -96,10 +103,12 @@ export function MagneticCursor({ children }: MagneticCursorProps) {
           transition={{ type: "spring", damping: 25, stiffness: 400 }}
         >
           {/* Logo Image */}
-          <motion.img
+          <MotionImage
             src="/images/cursor-p.jpg"
             alt="P"
-            className="h-full w-full object-cover"
+            fill
+            className="object-cover"
+            priority // Optimization for LCP if cursor is always visible
             animate={{
               scale: isHovering ? 1.2 : 1,
               rotate: isHovering ? 5 : 0,
@@ -219,10 +228,11 @@ export function ParallaxImage({
 
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
-      <motion.img
+      <MotionImage
         src={src}
         alt={alt}
-        className={`absolute inset-0 w-full ${imageHeight} object-cover ${imgClassName}`}
+        fill
+        className={`object-cover ${imgClassName}`}
         style={{ y, scale, top: imageTop }}
       />
     </div>
@@ -243,8 +253,8 @@ export function CinematicSection({
     <motion.section
       ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 100, filter: "blur(20px)" }}
-      animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+      initial={{ opacity: 0, y: 100 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 1.2, ease: CINEMATIC_EASE }}
     >
       {children}
@@ -487,6 +497,8 @@ export function FloatingParticles({
             width: particle.size,
             height: particle.size,
             backgroundColor: color,
+            willChange: "transform",
+            transform: "translate3d(0,0,0)", 
           }}
           animate={{
             y: [0, -100, 0],
@@ -540,12 +552,14 @@ export function GlowingOrbs({ count = 5, className = "" }: { count?: number; cla
             width: orb.size * 0.8,
             height: orb.size * 0.8,
             transform: "translate(-50%, -50%) translateZ(0)",
+            willChange: "transform",
           }}
         >
           <motion.div
             className="h-full w-full rounded-full blur-2xl"
             style={{
               backgroundColor: orb.color,
+              willChange: "transform",
             }}
             animate={{
               x: [0, 100, -50, 0],
@@ -693,7 +707,6 @@ export function ScrollOpacityFade({
       className={className}
       style={{
         opacity,
-        filter: useTransform(blur, (v) => `blur(${v}px)`),
       }}
     >
       {children}

@@ -12,13 +12,11 @@ export const cinematicFadeIn: Variants = {
     opacity: 0,
     y: 50,
     scale: 0.95,
-    filter: "blur(5px)",
   },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
       duration: 1,
       ease: CINEMATIC_EASE,
@@ -31,13 +29,11 @@ export const liquidReveal: Variants = {
     opacity: 0,
     clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
     y: 60,
-    filter: "blur(10px)",
   },
   visible: {
     opacity: 1,
     clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
     y: 0,
-    filter: "blur(0px)",
     transition: {
       duration: 1.2,
       ease: [0.76, 0, 0.24, 1] as const,
@@ -49,12 +45,10 @@ export const pixelReveal: Variants = {
   hidden: {
     opacity: 0,
     scale: 1.1,
-    filter: "blur(8px) brightness(1.5)",
   },
   visible: {
     opacity: 1,
     scale: 1,
-    filter: "blur(0px) brightness(1)",
     transition: {
       duration: 1.5,
       ease: CINEMATIC_EASE,
@@ -86,12 +80,10 @@ export const shatterReveal: Variants = {
 export const lensBlurReveal: Variants = {
   hidden: {
     opacity: 0,
-    filter: "blur(10px) brightness(0.8)",
     scale: 1.2,
   },
   visible: {
     opacity: 1,
-    filter: "blur(0px) brightness(1)",
     scale: 1,
     transition: {
       duration: 1.8,
@@ -173,13 +165,11 @@ export const wordRevealCinematic: Variants = {
     opacity: 0,
     y: "100%",
     rotateX: -60,
-    filter: "blur(5px)",
   },
   visible: {
     opacity: 1,
     y: "0%",
     rotateX: 0,
-    filter: "blur(0px)",
     transition: {
       duration: 0.8,
       ease: CINEMATIC_EASE,
@@ -208,14 +198,12 @@ export const heroReveal: Variants = {
     y: 100,
     rotateX: 20,
     scale: 0.9,
-    filter: "blur(8px)",
   },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
       duration: 1.4,
       ease: CINEMATIC_EASE,
@@ -228,13 +216,11 @@ export const cinematicSectionReveal: Variants = {
     opacity: 0,
     y: 100,
     scale: 0.95,
-    filter: "blur(8px)",
   },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
       duration: 1.2,
       ease: CINEMATIC_EASE,
@@ -269,41 +255,37 @@ export const glow: Variants = {
 };
 
 export const zoomInReveal: Variants = {
-  hidden: { scale: 1.2, opacity: 0, filter: "blur(8px)" },
+  hidden: { scale: 1.2, opacity: 0},
   visible: {
     scale: 1,
     opacity: 1,
-    filter: "blur(0px)",
     transition: { duration: 1.2, ease: CINEMATIC_EASE },
   },
 };
 
 export const slideUpCinematic: Variants = {
-  hidden: { y: 60, opacity: 0, filter: "blur(4px)" },
+  hidden: { y: 60, opacity: 0},
   visible: {
     y: 0,
     opacity: 1,
-    filter: "blur(0px)",
     transition: { duration: 0.9, ease: CINEMATIC_EASE },
   },
 };
 
 export const slideLeftCinematic: Variants = {
-  hidden: { x: -60, opacity: 0, filter: "blur(8px)" },
+  hidden: { x: -60, opacity: 0},
   visible: {
     x: 0,
     opacity: 1,
-    filter: "blur(0px)",
     transition: { duration: 0.9, ease: CINEMATIC_EASE },
   },
 };
 
 export const slideRightCinematic: Variants = {
-  hidden: { x: 60, opacity: 0, filter: "blur(8px)" },
+  hidden: { x: 60, opacity: 0},
   visible: {
     x: 0,
     opacity: 1,
-    filter: "blur(0px)",
     transition: { duration: 0.9, ease: CINEMATIC_EASE },
   },
 };
@@ -429,12 +411,10 @@ export const shopifyTextReveal: Variants = {
   hidden: {
     opacity: 0,
     y: 30,
-    filter: "blur(5px)",
   },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
       duration: 0.6,
       ease: SHOPIFY_EASE,
@@ -446,12 +426,10 @@ export const shopifyImageReveal: Variants = {
   hidden: {
     opacity: 0,
     scale: 1.1,
-    filter: "blur(10px)",
   },
   visible: {
     opacity: 1,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
       duration: 1,
       ease: SHOPIFY_EASE,
@@ -546,12 +524,10 @@ export const scaleIn: Variants = {
   hidden: {
     opacity: 0,
     scale: 0.85,
-    filter: "blur(8px)",
   },
   visible: {
     opacity: 1,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
       duration: 0.8,
       ease: CINEMATIC_EASE,
@@ -575,3 +551,4 @@ export const flipReveal: Variants = {
     },
   },
 };
+

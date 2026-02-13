@@ -65,8 +65,12 @@ const StatsSection = () => {
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.03]"></div>
 
       <motion.div
-        className="bg-primary/15 absolute top-0 left-1/4 h-[800px] w-[800px] -translate-y-1/2 rounded-full blur-[150px]"
-        style={{ y: backgroundY }}
+        className="absolute top-0 left-1/4 h-[800px] w-[800px] -translate-y-1/2 rounded-full gpu-accelerated"
+        style={{
+          y: backgroundY,
+          background: "radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%)",
+          willChange: "transform",
+        }}
         animate={{
           scale: [1, 1.3, 1],
           opacity: [0.4, 0.6, 0.4],
@@ -74,8 +78,12 @@ const StatsSection = () => {
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="bg-primary/12 absolute right-1/4 bottom-0 h-[700px] w-[700px] translate-y-1/2 rounded-full blur-[180px]"
-        style={{ y: backgroundY }}
+        className="absolute right-1/4 bottom-0 h-[700px] w-[700px] translate-y-1/2 rounded-full gpu-accelerated"
+        style={{
+          y: backgroundY,
+          background: "radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%)",
+          willChange: "transform",
+        }}
         animate={{
           scale: [1.2, 1, 1.2],
           opacity: [0.5, 0.3, 0.5],
@@ -92,12 +100,12 @@ const StatsSection = () => {
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.div
-            className="border-primary/40 bg-primary/10 text-primary mb-10 inline-flex items-center gap-2 rounded-full border px-6 py-2.5 text-[11px] font-bold tracking-[0.3em] uppercase"
+            className="border-primary/40 bg-primary/10 text-primary mb-10 inline-flex items-center gap-2 rounded-full border px-6 py-2.5 text-[11px] font-bold tracking-[0.3em] uppercase gpu-accelerated"
             variants={cinematicFadeIn}
             whileHover={{
               scale: 1.1,
-              boxShadow: "0 0 40px rgba(37, 99, 235, 0.5)",
             }}
+            style={{ willChange: "transform" }}
           >
             Impact in Motion
           </motion.div>
@@ -120,10 +128,6 @@ const StatsSection = () => {
                   whileHover={{
                     scale: 1.1,
                     rotateX: -10,
-                    textShadow:
-                      index === 2
-                        ? "0 30px 60px rgba(37, 99, 235, 0.6)"
-                        : "0 30px 60px rgba(255, 255, 255, 0.3)",
                     transition: { duration: 0.4 },
                   }}
                 >
@@ -151,18 +155,16 @@ const StatsSection = () => {
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className="group relative flex flex-col items-center rounded-[2.5rem] border border-white/10 bg-white/5 p-10 text-center"
+              className="group relative flex flex-col items-center rounded-[2.5rem] border border-white/10 bg-white/5 p-10 text-center gpu-accelerated"
               variants={cardReveal3D}
               whileHover={{
                 y: -25,
                 scale: 1.06,
                 rotateX: -8,
                 rotateY: index % 3 === 0 ? -6 : index % 3 === 2 ? 6 : 0,
-                borderColor: "rgba(37, 99, 235, 0.5)",
-                boxShadow: "0 50px 100px -20px rgba(37, 99, 235, 0.4)",
                 transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
               }}
-              style={{ transformStyle: "preserve-3d" }}
+              style={{ transformStyle: "preserve-3d", willChange: "transform" }}
             >
               <motion.div className="from-primary/20 via-primary/5 absolute inset-0 rounded-[2.5rem] bg-linear-to-br to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
 

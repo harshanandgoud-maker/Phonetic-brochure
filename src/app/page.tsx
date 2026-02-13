@@ -2,21 +2,24 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/sections/navbar";
 import HeroSection from "@/components/sections/hero";
-import PhilosophySection from "@/components/sections/philosophy";
-import WhoWeAreSection from "@/components/sections/who-we-are";
-import AboutSection from "@/components/sections/about";
-import MissionStatement from "@/components/sections/mission-statement";
-import PhonemicIntelligence from "@/components/sections/phonemic-intelligence";
-import CoursesSection from "@/components/sections/courses";
-import DetailedCurriculum from "@/components/sections/detailed-curriculum";
-import StatsSection from "@/components/sections/stats-dark";
-import CurriculumTimeline from "@/components/sections/curriculum-timeline";
-import WhyChooseUs from "@/components/sections/why-choose-us";
-import Testimonials from "@/components/sections/testimonials";
-import Footer from "@/components/sections/footer";
 import SplashIntro from "@/components/sections/splash-intro";
+
+// Dynamically import below-the-fold sections
+const PhilosophySection = dynamic(() => import("@/components/sections/philosophy"), { ssr: false });
+const WhoWeAreSection = dynamic(() => import("@/components/sections/who-we-are"));
+const AboutSection = dynamic(() => import("@/components/sections/about"));
+const MissionStatement = dynamic(() => import("@/components/sections/mission-statement"));
+const PhonemicIntelligence = dynamic(() => import("@/components/sections/phonemic-intelligence"));
+const CoursesSection = dynamic(() => import("@/components/sections/courses"));
+const DetailedCurriculum = dynamic(() => import("@/components/sections/detailed-curriculum"));
+const StatsSection = dynamic(() => import("@/components/sections/stats-dark"));
+const CurriculumTimeline = dynamic(() => import("@/components/sections/curriculum-timeline"));
+const WhyChooseUs = dynamic(() => import("@/components/sections/why-choose-us"));
+const Testimonials = dynamic(() => import("@/components/sections/testimonials"));
+const Footer = dynamic(() => import("@/components/sections/footer"));
 import {
   MagneticCursor,
   ScrollProgress,
@@ -31,31 +34,7 @@ import {
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
   
-  // Initialize Lenis for smooth scrolling
-  useEffect(() => {
-    // Dynamic import to avoid SSR issues with Lenis
-    import("lenis").then((LenisModule) => {
-      const Lenis = LenisModule.default;
-      const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth easeOutExpo
-        orientation: "vertical",
-        gestureOrientation: "vertical",
-        smoothWheel: true,
-      });
-
-      function raf(time: number) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-
-      requestAnimationFrame(raf);
-
-      return () => {
-        lenis.destroy();
-      };
-    });
-  }, []);
+  // Lenis initialization removed as it is handled globally in layout.tsx via SmoothScrolling component
 
   const handleIntroComplete = () => {
     setShowIntro(false);
@@ -106,9 +85,9 @@ export default function Home() {
           {/* Delay particle rendering until after intro to save resources */}
           {!showIntro && (
             <>
-              <GlowingOrbs count={6} className="fixed inset-0 z-0" />
+              <GlowingOrbs count={3} className="fixed inset-0 z-0" />
               <FloatingParticles 
-                count={30} 
+                count={15} 
                 className="fixed inset-0 z-0" 
                 color="rgba(37, 99, 235, 0.2)" 
               />

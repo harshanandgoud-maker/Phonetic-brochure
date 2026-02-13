@@ -1,8 +1,18 @@
 import type { NextConfig } from "next";
-import path from "node:path";
 
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  poweredByHeader: false,
+  compress: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
   images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
     remotePatterns: [
       {
         protocol: "https",
@@ -14,11 +24,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // outputFileTracingRoot removed to fix Vercel path issue
-  typescript: {
-    // ignoreBuildErrors: false,
-  },
-
 };
 
 export default nextConfig;

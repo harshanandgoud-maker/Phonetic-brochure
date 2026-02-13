@@ -297,8 +297,9 @@ const TiltCard = ({
       style={{
         perspective: 1000,
         transformStyle: "preserve-3d",
+        willChange: "transform",
       }}
-      className="relative h-full w-full"
+      className="relative h-full w-full gpu-accelerated"
       variants={variants}
     >
       <motion.div
@@ -307,6 +308,7 @@ const TiltCard = ({
           rotateX: rotateXSpring,
           rotateY: rotateYSpring,
           transformStyle: "preserve-3d",
+          willChange: "transform",
         }}
       >
         {/* Spotlight Effect Layer */}
@@ -426,6 +428,8 @@ const ParticleBackground = ({ color }: { color: string }) => {
             height: p.height,
             left: "50%",
             top: "50%",
+            willChange: "transform",
+            transform: "translateZ(0)",
           }}
         />
       ))}
@@ -691,15 +695,15 @@ const CoursesSection = () => {
                     <motion.div
                       key={course.title}
                       variants={cardReveal3D}
-                      className="group relative h-full overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 transition-all duration-500 hover:shadow-xl"
+                      className="group relative h-full overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 transition-all duration-500 hover:shadow-xl gpu-accelerated"
                       whileHover={{
                         y: -8,
                         scale: 1.05,
                         rotateX: 5,
                         rotateY: -5,
-                        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)",
                         transition: { duration: 0.4, ease: "easeOut" },
                       }}
+                      style={{ willChange: "transform" }}
                     >
                       {/* Hover Gradient Background */}
                       <div

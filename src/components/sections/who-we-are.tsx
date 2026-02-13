@@ -69,11 +69,11 @@ const WhoWeAreSection: React.FC = () => {
 
           <motion.div variants={slideRightCinematic} className="space-y-8">
             <motion.div
-              className="border-primary/20 text-primary mb-4 inline-block rounded-full border bg-white/5 px-8 py-3 text-[11px] font-bold tracking-[0.3em] uppercase backdrop-blur-sm"
+              className="border-primary/20 text-primary mb-4 inline-block rounded-full border bg-white/5 px-8 py-3 text-[11px] font-bold tracking-[0.3em] uppercase backdrop-blur-sm will-change-transform"
               whileHover={{
-                scale: 1.1,
-                boxShadow: "0 20px 40px -10px rgba(37, 99, 235, 0.3)",
+                scale: 1.05,
               }}
+              whileTap={{ scale: 0.95 }}
             >
               Who We Are
             </motion.div>
