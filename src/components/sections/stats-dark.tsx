@@ -69,7 +69,7 @@ const StatsSection = () => {
         style={{
           y: backgroundY,
           background: "radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%)",
-          willChange: "transform",
+          willChange: "transform, opacity",
         }}
         animate={{
           scale: [1, 1.3, 1],
@@ -82,7 +82,7 @@ const StatsSection = () => {
         style={{
           y: backgroundY,
           background: "radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%)",
-          willChange: "transform",
+          willChange: "transform, opacity",
         }}
         animate={{
           scale: [1.2, 1, 1.2],

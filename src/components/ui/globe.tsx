@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import createGlobe from "cobe";
+import { cn } from "@/lib/utils";
 
 export function Globe({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -11,26 +12,28 @@ export function Globe({ className }: { className?: string }) {
 
     if (!canvasRef.current) return;
 
+    const isMobile = window.innerWidth < 768;
+
     const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: typeof window !== "undefined" ? Math.min(window.devicePixelRatio, 2) : 1,
-      width: 600 * 2,
-      height: 600 * 2,
+      devicePixelRatio: isMobile ? 1 : 2,
+      width: 1000 * 2,
+      height: 1000 * 2,
       phi: 0,
-      theta: 0,
+      theta: 0.3,
       dark: 0,
       diffuse: 1.2,
-      mapSamples: 6000,
+      mapSamples: isMobile ? 4000 : 16000,
       mapBrightness: 6,
       baseColor: [1, 1, 1],
       markerColor: [0.1, 0.4, 1],
       glowColor: [1, 1, 1],
       markers: [
-        { location: [37.7595, -122.4367], size: 0.03 },
-        { location: [40.7128, -74.006], size: 0.1 },
-        { location: [12.9716, 77.5946], size: 0.1 },
-        { location: [51.5074, -0.1278], size: 0.05 },
+        // approximate New York
+        { location: [40.7128, -74.0060], size: isMobile ? 0.05 : 0.1 },
       ],
       onRender: (state) => {
+        // Called on every animation frame.
+        // `state` will be an empty object, return updated params.
         state.phi = phi;
         phi += 0.005;
       },
@@ -42,10 +45,11 @@ export function Globe({ className }: { className?: string }) {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: 600, height: 600, maxWidth: "100%", aspectRatio: 1 }}
-      className={className}
-    />
+    <div className={cn("relative flex w-full max-w-[700px] aspect-square items-center justify-center overflow-hidden", className)}>
+      <canvas
+        ref={canvasRef}
+        className="w-[1000px] h-[1000px] max-w-full aspect-square"
+      />
+    </div>
   );
 }

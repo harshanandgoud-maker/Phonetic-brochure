@@ -13,8 +13,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "PHONETIC | Academy of Art & Communication",
+  title: "E-brochure-Phonetic",
   description: "Master the Art of Communication with Cinematic Precision",
+  icons: {
+    icon: "/images/phonetic-logo-new.png",
+  },
 };
 
 export default function RootLayout({

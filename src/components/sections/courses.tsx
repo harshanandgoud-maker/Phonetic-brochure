@@ -543,110 +543,96 @@ const CoursesSection = () => {
             >
               {/* Technical Card */}
               <TiltCard
-                className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[3rem] bg-linear-to-br from-cyan-600 to-blue-700 p-12 text-white shadow-2xl transition-all duration-500 hover:shadow-cyan-500/30 md:p-20"
+                className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[2.5rem] bg-linear-to-b from-[#00c6ff] to-[#0072ff] p-8 text-white shadow-2xl shadow-blue-500/30 transition-all duration-500 md:p-12"
                 onClick={() => setSelectedSide("technical")}
                 isActive={hoveredSide === "technical" || hoveredSide === null}
                 variants={cinematicFadeIn}
-                glowColor="#06b6d4" // Cyan-500
+                glowColor="#00c6ff"
               >
-                {/* Interactive Background */}
-                <ParticleBackground color="bg-white" />
-                <div
-                  className="bg-noise absolute inset-0 opacity-20"
-                  onMouseEnter={() => setHoveredSide("technical")}
-                  onMouseLeave={() => setHoveredSide(null)}
-                />
+                {/* Background Detail */}
+                <div className="absolute inset-0 bg-linear-to-tr from-white/10 to-transparent opacity-30" />
+                
+                {/* Central Glass Panel */}
+                <div className="relative flex flex-col items-center justify-center w-[85%] h-[80%] rounded-4xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] p-6">
+                    
+                    {/* Icon Box */}
+                    <motion.div
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                    }}
+                    className="relative mb-6"
+                    >
+                        <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-linear-to-br from-white/20 to-white/5 border border-white/30 shadow-lg backdrop-blur-sm">
+                            <Code className="h-10 w-10 text-white drop-shadow-md" strokeWidth={2.5} />
+                        </div>
+                    </motion.div>
 
-                <motion.div
-                  animate={{ rotate: [0, 5, -5, 0], y: [0, -10, 0] }}
-                  transition={{
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="relative z-10 mb-8"
-                >
-                  <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-3xl">
-                    <Code className="h-16 w-16 text-white" strokeWidth={1.5} />
-                  </div>
-                </motion.div>
+                    <h3 className="font-display text-center text-4xl md:text-5xl font-black italic tracking-wide text-white uppercase drop-shadow-lg mb-2 transform -skew-x-6">
+                    Technical
+                    </h3>
 
-                <motion.h3
-                  variants={wordReveal}
-                  className="font-display relative z-10 bg-linear-to-b from-white to-white/70 bg-clip-text px-4 text-center text-5xl font-black tracking-tighter text-transparent uppercase italic md:text-6xl"
-                >
-                  Technical
-                </motion.h3>
+                    <p className="text-[10px] md:text-xs font-bold tracking-[0.15em] text-white/90 uppercase mb-8 text-center leading-relaxed">
+                    Programming • Data •<br/>Systems
+                    </p>
 
-                <motion.p
-                  variants={cinematicFadeIn}
-                  className="relative z-10 mt-4 text-xs font-bold tracking-widest text-cyan-100 uppercase opacity-80 transition-opacity group-hover:opacity-100"
-                >
-                  Programming • Data • Systems
-                </motion.p>
-
-                <motion.div
-                  className="relative z-10 mt-12 flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-bold tracking-widest text-blue-700 uppercase"
-                  initial={{ y: 20, opacity: 0 }}
-                  whileHover={{ scale: 1.05, gap: "12px" }}
-                  animate={{ y: 0, opacity: 1 }}
-                >
-                  Explore <ArrowUpRight className="h-4 w-4" />
-                </motion.div>
+                    <motion.div
+                    className="flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-bold tracking-widest text-[#0072ff] uppercase shadow-lg hover:shadow-xl transition-all"
+                    whileHover={{ scale: 1.05 }}
+                    >
+                    Explore <ArrowUpRight className="h-4 w-4" strokeWidth={3} />
+                    </motion.div>
+                </div>
               </TiltCard>
 
               {/* Non-Technical Card */}
               <TiltCard
-                className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[3rem] bg-linear-to-br from-rose-500 to-orange-600 p-12 text-white shadow-2xl transition-all duration-500 hover:shadow-rose-500/30 md:p-20"
+                className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[2.5rem] bg-linear-to-b from-[#ff512f] to-[#dd2476] p-8 text-white shadow-2xl shadow-rose-500/30 transition-all duration-500 md:p-12"
                 onClick={() => setSelectedSide("non-technical")}
                 isActive={hoveredSide === "non-technical" || hoveredSide === null}
                 variants={cinematicFadeIn}
-                glowColor="#f43f5e" // Rose-500
+                glowColor="#ff512f"
               >
-                <ParticleBackground color="bg-white" />
-                <div
-                  className="bg-noise absolute inset-0 opacity-20"
-                  onMouseEnter={() => setHoveredSide("non-technical")}
-                  onMouseLeave={() => setHoveredSide(null)}
-                />
+                 {/* Background Detail */}
+                 <div className="absolute inset-0 bg-linear-to-tr from-white/10 to-transparent opacity-30" />
 
-                <motion.div
-                  animate={{ rotate: [0, -5, 5, 0], y: [0, -10, 0] }}
-                  transition={{
-                    duration: 7,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1,
-                  }}
-                  className="relative z-10 mb-8"
-                >
-                  <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-3xl">
-                    <Users className="h-16 w-16 text-white" strokeWidth={1.5} />
-                  </div>
-                </motion.div>
+                 {/* Central Glass Panel */}
+                 <div className="relative flex flex-col items-center justify-center w-[85%] h-[80%] rounded-4xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] p-6">
 
-                <motion.h3
-                  variants={wordReveal}
-                  className="font-display relative z-10 bg-linear-to-b from-white to-white/70 bg-clip-text px-4 text-center text-5xl font-black tracking-tighter text-transparent uppercase italic md:text-6xl"
-                >
-                  Non-Technical
-                </motion.h3>
+                    <motion.div
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 0.2
+                    }}
+                    className="relative mb-6"
+                    >
+                        <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-linear-to-br from-white/20 to-white/5 border border-white/30 shadow-lg backdrop-blur-sm">
+                            <Users className="h-10 w-10 text-white drop-shadow-md" strokeWidth={2.5} />
+                        </div>
+                    </motion.div>
 
-                <motion.p
-                  variants={cinematicFadeIn}
-                  className="relative z-10 mt-4 text-xs font-bold tracking-widest text-rose-100 uppercase opacity-80 transition-opacity group-hover:opacity-100"
-                >
-                  Soft Skills • Resume • Growth
-                </motion.p>
+                    <h3 className="font-display text-center text-4xl md:text-5xl font-black italic tracking-wide text-white uppercase drop-shadow-lg mb-2 transform -skew-x-6">
+                    Non-
+                    <br />
+                    Technical
+                    </h3>
 
-                <motion.div
-                  className="relative z-10 mt-12 flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-bold tracking-widest text-rose-700 uppercase"
-                  initial={{ y: 20, opacity: 0 }}
-                  whileHover={{ scale: 1.05, gap: "12px" }}
-                  animate={{ y: 0, opacity: 1 }}
-                >
-                  Explore <ArrowUpRight className="h-4 w-4" />
-                </motion.div>
+                    <p className="text-[10px] md:text-xs font-bold tracking-[0.15em] text-white/90 uppercase mb-8 text-center leading-relaxed">
+                    Soft Skills • Resume •<br/>Growth
+                    </p>
+
+                    <motion.div
+                    className="flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-bold tracking-widest text-[#dd2476] uppercase shadow-lg hover:shadow-xl transition-all"
+                    whileHover={{ scale: 1.05 }}
+                    >
+                    Explore <ArrowUpRight className="h-4 w-4" strokeWidth={3} />
+                    </motion.div>
+                </div>
               </TiltCard>
             </motion.div>
           ) : (

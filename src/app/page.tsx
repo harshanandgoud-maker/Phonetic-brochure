@@ -79,20 +79,19 @@ export default function Home() {
           }}
           className="relative"
         >
-          <GrainOverlay />
-          <LensFlare />
           
-          {/* Delay particle rendering until after intro to save resources */}
+          {/* Delay particle rendering until after intro to save resources - DISABLED FOR CLEAN LOOK
           {!showIntro && (
             <>
-              <GlowingOrbs count={3} className="fixed inset-0 z-0" />
-              <FloatingParticles 
-                count={15} 
-                className="fixed inset-0 z-0" 
-                color="rgba(37, 99, 235, 0.2)" 
-              />
+               <GlowingOrbs count={3} className="fixed inset-0 z-0" />
+               <FloatingParticles 
+                 count={15} 
+                 className="fixed inset-0 z-0" 
+                 color="rgba(37, 99, 235, 0.2)" 
+               />
             </>
-          )}
+          )} 
+          */}
 
           <Navbar />
           <main className="relative z-10">

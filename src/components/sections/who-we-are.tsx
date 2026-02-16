@@ -58,7 +58,7 @@ const WhoWeAreSection: React.FC = () => {
               <ParallaxImage
                 src="/images/santhosh_kumar_ananta.jpg"
                 alt="Santhosh Kumar Ananta - Founder of Phonetic"
-                className="aspect-4/5 rounded-2xl border border-white/10 bg-white grayscale transition-all duration-700 hover:grayscale-0"
+                className="aspect-4/5 rounded-2xl border border-white/10 bg-white transition-all duration-700"
                 imgClassName="object-contain p-2"
                 strength={0.05}
                 imageHeight="h-full"

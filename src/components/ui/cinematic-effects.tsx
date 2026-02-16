@@ -41,29 +41,37 @@ export function MagneticCursor({ children }: MagneticCursorProps) {
       cursorY.set(e.clientY);
     };
     
-    // Use event delegation for hover states instead of expensive elementFromPoint
+    let rafId: number | null = null;
+
+    // Optimize DOM lookups with RAF
     const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      
-      const clickable = target.closest(
-        "a, button, [data-cursor-hover], input, textarea, select, [role='button']"
-      );
-      const textInput = target.closest(
-        "input[type='text'], input:not([type]), input[type='email'], input[type='password'], input[type='number'], input[type='search'], input[type='tel'], input[type='url'], input[type='date'], input[type='datetime-local'], input[type='month'], input[type='time'], input[type='week'], textarea, [contenteditable='true']"
-      );
+      if (rafId) return;
 
-      const isInteractive = !!clickable;
-      const shouldHide = !!textInput;
+      rafId = requestAnimationFrame(() => {
+        const target = e.target as HTMLElement;
+        
+        const clickable = target.closest(
+          "a, button, [data-cursor-hover], input, textarea, select, [role='button']"
+        );
+        const textInput = target.closest(
+          "input[type='text'], input:not([type]), input[type='email'], input[type='password'], input[type='number'], input[type='search'], input[type='tel'], input[type='url'], input[type='date'], input[type='datetime-local'], input[type='month'], input[type='time'], input[type='week'], textarea, [contenteditable='true']"
+        );
 
-      setIsHovering(isInteractive);
-      setIsHidden(shouldHide);
+        const isInteractive = !!clickable;
+        const shouldHide = !!textInput;
 
-      if (isInteractive && clickable) {
-        const cursorTextAttr = clickable.getAttribute("data-cursor-text") || "";
-        setCursorText(cursorTextAttr);
-      } else {
-        setCursorText("");
-      }
+        setIsHovering(isInteractive);
+        setIsHidden(shouldHide);
+
+        if (isInteractive && clickable) {
+          const cursorTextAttr = clickable.getAttribute("data-cursor-text") || "";
+          setCursorText(cursorTextAttr);
+        } else {
+          setCursorText("");
+        }
+        
+        rafId = null;
+      });
     };
 
     window.addEventListener("mousemove", moveCursor, { passive: true });
@@ -78,6 +86,7 @@ export function MagneticCursor({ children }: MagneticCursorProps) {
       document.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("mouseleave", () => setIsHidden(true));
       window.removeEventListener("mouseenter", () => setIsHidden(false));
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, [cursorX, cursorY]);
 

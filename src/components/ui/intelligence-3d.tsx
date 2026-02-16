@@ -34,7 +34,7 @@ function BrainNode({ position, color }: { position: [number, number, number]; co
       onPointerOver={() => setHover(true)}
       onPointerOut={() => setHover(false)}
     >
-      <sphereGeometry args={[0.15, 32, 32]} />
+      <sphereGeometry args={[0.15, 16, 16]} />
       <meshPhysicalMaterial
         color={hovered ? "#ffffff" : color}
         emissive={hovered ? "#ffffff" : color}
@@ -146,7 +146,7 @@ function FloatingBrainStructure() {
 
 export default function Intelligence3D() {
   return (
-    <div className="relative h-full min-h-[500px] w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
+    <div className="relative h-full min-h-[500px] w-full overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.05),transparent_70%)]" />
       <Canvas dpr={[1, 1.5]} gl={{ powerPreference: "high-performance", antialias: false }}>
         <PerspectiveCamera makeDefault position={[0, 0, 7]} fov={50} />

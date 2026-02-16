@@ -7,6 +7,14 @@ export default function SmoothScrolling({ children }: { children: React.ReactNod
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // Check for touch capability first
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    
+    // Disable Lenis on touch devices for native smooth scrolling (prevents jitter/lag)
+    if (isTouch) {
+        return;
+    }
+
     // Initialize Lenis with smooth settings
     const lenis = new Lenis({
       duration: 1.2, // Slightly snappier
@@ -17,16 +25,6 @@ export default function SmoothScrolling({ children }: { children: React.ReactNod
       wheelMultiplier: 1,
       touchMultiplier: 2,
     });
-
-    // Disable Lenis on touch devices for native smooth scrolling (prevents jitter/lag)
-    // We do this by checking the user agent or touch interference, but Lenis handles it well usually.
-    // However, for "no lag" guarantee on low-end mobile, native is best.
-    // We can't cancel the instance easily if we don't start it, but let's just not start it.
-    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouch) {
-        lenis.destroy();
-        return;
-    }
 
     lenisRef.current = lenis;
 

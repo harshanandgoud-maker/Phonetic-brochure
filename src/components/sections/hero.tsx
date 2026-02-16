@@ -1,106 +1,135 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
+import createGlobe from "cobe";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  heroReveal,
-  staggerContainerCinematic,
-  wordRevealCinematic,
-  float,
-  pixelReveal,
-} from "@/lib/animations";
-import { MagneticButton } from "@/components/ui/cinematic-effects";
-import Image from "next/image";
+import { ArrowRight, Play } from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-export default function HeroSection() {
-  const words = "Master the Art of Communication with Cinematic Precision".split(" ");
+// Globe Component
+function Globe({ className }: { className?: string }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    let phi = 0;
+
+    if (!canvasRef.current) return;
+
+    const isMobile = window.innerWidth < 768;
+
+    const globe = createGlobe(canvasRef.current, {
+      devicePixelRatio: 1, // Keep 1 for performance
+      width: 800 * 1,
+      height: 800 * 1,
+      phi: 0,
+      theta: 0.3,
+      dark: 0,
+      diffuse: 1.2,
+      mapSamples: isMobile ? 4000 : 10000, // Reduced samples for mobile
+      mapBrightness: 6,
+      baseColor: [1, 1, 1],
+      markerColor: [0.1, 0.4, 1],
+      glowColor: [1, 1, 1],
+      markers: [
+        // approximate New York
+        { location: [40.7128, -74.0060], size: isMobile ? 0.05 : 0.1 },
+      ],
+      onRender: (state) => {
+        // Called on every animation frame.
+        // `state` will be an empty object, return updated params.
+        state.phi = phi;
+        phi += 0.005;
+      },
+    });
+
+    return () => {
+      globe.destroy();
+    };
+  }, []);
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-32 pb-20">
-      <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
-        >
-          <source src="/intro-video.mp4" type="video/mp4" />
-        </video>
-        <div className="from-background to-background absolute inset-0 bg-linear-to-b via-transparent" />
-      </div>
+    <div className={cn("relative flex w-full h-full max-w-[700px] aspect-square items-center justify-center overflow-hidden", className)}>
+      <canvas
+        ref={canvasRef}
+        className="w-[1000px] h-[1000px] max-w-full aspect-square"
+      />
+    </div>
+  );
+}
 
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="mx-auto max-w-4xl text-center">
-          <motion.div variants={staggerContainerCinematic} initial="hidden" animate="visible">
-            <motion.div variants={pixelReveal} className="mb-8 flex flex-col items-center">
-              <div className="relative mb-4 h-48 w-48 md:h-64 md:w-64">
-                <Image
-                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/2897df09-0070-4f38-8117-82d9d8b58194/download-1768478469467.png?width=1024&height=1024&resize=contain"
-                  alt="PHONETIC Logo"
-                  fill
-                  sizes="(max-width: 768px) 192px, 256px"
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <span className="border-primary/30 bg-primary/10 text-primary rounded-full border px-4 py-2 text-sm font-medium tracking-widest uppercase">
-                Welcome to the Future of Learning
-              </span>
-            </motion.div>
-
-            <h1 className="mb-8 text-5xl leading-tight font-bold tracking-tight md:text-8xl">
-              {words.map((word, i) => (
-                <span key={i} className="mr-3 inline-block overflow-hidden md:mr-6">
-                  <motion.span variants={wordRevealCinematic} className="inline-block">
-                    {word}
-                  </motion.span>
-                </span>
-              ))}
-            </h1>
-
-            <motion.p
-              variants={heroReveal}
-              className="text-muted-foreground mx-auto mb-12 max-w-2xl text-xl leading-relaxed md:text-2xl"
+export default function HeroSection() {
+  return (
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background pt-20">
+      {/* Optimized Dotted Background */}
+      <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-[radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+      
+      <div className="container relative z-10 mx-auto px-4 md:px-6">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+            
+          {/* Left Content */}
+          <div className="flex flex-col justify-center space-y-4 text-center lg:text-left">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center rounded-lg bg-blue-50 px-3 py-1 text-sm font-medium text-blue-600 ring-1 ring-inset ring-blue-600/20 mx-auto lg:mx-0 w-fit"
             >
-              Experience education like a cinematic masterpiece. We combine phonemic intelligence
-              with high-end storytelling to transform how you speak and think.
+              THE FUTURE OF LEARNING
+            </motion.div>
+            
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-7xl/none text-[#0f172a]"
+            >
+              Master the Art of <span className="text-[#2563eb]">Communication</span> with Cinematic Precision
+            </motion.h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400 mx-auto lg:mx-0"
+            >
+              Experience education as a <span className="font-semibold text-gray-900">cinematic masterpiece</span>. We fuse phonemic intelligence with high-end storytelling to redefine your voice and presence.
             </motion.p>
 
             <motion.div
-              variants={staggerContainerCinematic}
-              className="flex flex-col items-center justify-center gap-6 sm:flex-row"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-col gap-2 min-[400px]:flex-row justify-center lg:justify-start"
             >
-              <MagneticButton
-                strength={0.3}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary/20 w-full rounded-full px-10 py-5 text-lg font-bold shadow-2xl transition-colors sm:w-auto"
+              <Link
+                href="#"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-[#2563eb] px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
               >
                 Start Your Journey
-              </MagneticButton>
-              <MagneticButton
-                strength={0.2}
-                className="w-full rounded-full border border-white/20 px-10 py-5 text-lg font-bold backdrop-blur-sm transition-colors hover:bg-white/10 sm:w-auto"
+              </Link>
+              <Link
+                href="#"
+                className="inline-flex h-12 items-center justify-center rounded-full border border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
               >
                 Watch Trailer
-              </MagneticButton>
+              </Link>
             </motion.div>
+          </div>
+
+          {/* Right Visual (Globe) */}
+          <motion.div
+             initial={{ opacity: 0, scale: 0.8 }}
+             animate={{ opacity: 1, scale: 1 }}
+             transition={{ duration: 0.8, delay: 0.2 }}
+             className="mx-auto flex w-full max-w-[500px] items-center justify-center lg:max-w-none aspect-square"
+          >
+            <Globe className="" />
           </motion.div>
+
         </div>
       </div>
-
-      <motion.div
-        variants={float}
-        animate="animate"
-        className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2"
-      >
-        <div className="flex h-10 w-6 justify-center rounded-full border-2 border-white/20 pt-2">
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="bg-primary h-1.5 w-1.5 rounded-full"
-          />
-        </div>
-      </motion.div>
     </section>
   );
 }
