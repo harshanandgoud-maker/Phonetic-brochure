@@ -10,7 +10,6 @@ interface SplashIntroProps {
 const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isExiting, setIsExiting] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -27,8 +26,9 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
 
     // Fallback timer
     const fallbackTimer = setTimeout(() => {
+      console.warn("SplashIntro timed out, forcing completion");
       handleComplete();
-    }, 8000); // Extended to 8s
+    }, 5000); // Reduced to 5s
 
     // Attempt autoplay
     video.muted = true;
@@ -41,31 +41,23 @@ const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
       } catch (err) {
         console.warn("Autoplay blocked/failed:", err);
         setIsPlaying(false);
+        // If autoplay fails, we might want to show controls or skip
       }
     };
     
     playVideo();
-
-    const handleTimeUpdate = () => {
-      if (video.duration) {
-        const currentProgress = (video.currentTime / video.duration) * 100;
-        setProgress(currentProgress);
-      }
-    };
 
     const handleEnded = () => {
       clearTimeout(fallbackTimer);
       handleComplete();
     };
 
-    video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("ended", handleEnded);
     video.addEventListener("play", () => setIsPlaying(true));
     video.addEventListener("pause", () => setIsPlaying(false));
 
     return () => {
       clearTimeout(fallbackTimer);
-      video.removeEventListener("timeupdate", handleTimeUpdate);
       video.removeEventListener("ended", handleEnded);
     };
   }, [handleComplete]);

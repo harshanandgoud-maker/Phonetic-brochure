@@ -8,7 +8,6 @@ import {
   Code,
   UserCircle,
   Briefcase,
-  GraduationCap,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
@@ -74,7 +73,7 @@ export default function CurriculumTimeline() {
 
   return (
     <section id="curriculum" className="relative overflow-hidden bg-white py-24 md:py-32">
-      <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.015]" />
+      <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.015] hidden md:block" />
       
       <div className="relative z-10 container mx-auto px-6" ref={containerRef}>
         <motion.div

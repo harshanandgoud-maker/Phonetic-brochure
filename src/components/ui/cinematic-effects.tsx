@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -9,10 +9,8 @@ import {
   AnimatePresence,
   useScroll,
   useTransform,
-  useInView,
-  MotionValue,
 } from "framer-motion";
-import { CINEMATIC_EASE, SHOPIFY_EASE } from "@/lib/animations";
+// Removed unused imports if any
 
 const MotionImage = motion.create(Image);
 
@@ -144,7 +142,7 @@ export function MagneticCursor({ children }: MagneticCursorProps) {
 
 export function GrainOverlay() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-99 opacity-[0.03]">
+    <div className="pointer-events-none fixed inset-0 z-99 opacity-[0.03] hidden md:block">
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
     </div>
   );
@@ -157,7 +155,7 @@ export function LensFlare() {
 
   return (
     <motion.div
-      className="from-primary/20 pointer-events-none fixed top-0 left-0 z-1 h-[40vw] w-[40vw] rounded-full bg-linear-to-br via-blue-500/10 to-transparent blur-[60px]"
+      className="from-primary/20 pointer-events-none fixed top-0 left-0 z-1 h-[40vw] w-[40vw] rounded-full bg-linear-to-br via-blue-500/10 to-transparent blur-[60px] hidden md:block"
       style={{ x, opacity, y: "-20%" }}
     />
   );
@@ -215,7 +213,6 @@ export function ParallaxImage({
   className = "",
   imgClassName = "",
   strength = 0.2,
-  imageHeight = "h-[140%]",
   imageTop = "-20%",
 }: {
   src: string;
@@ -223,7 +220,6 @@ export function ParallaxImage({
   className?: string;
   imgClassName?: string;
   strength?: number;
-  imageHeight?: string;
   imageTop?: string | number;
 }) {
   const ref = useRef(null);
@@ -248,218 +244,6 @@ export function ParallaxImage({
   );
 }
 
-export function CinematicSection({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
-
-  return (
-    <motion.section
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0, y: 100 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1.2, ease: CINEMATIC_EASE }}
-    >
-      {children}
-    </motion.section>
-  );
-}
-
-export function ScrollScaleSection({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.9]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [100, 0, 0, -50]);
-
-  return (
-    <motion.div ref={ref} className={className} style={{ scale, opacity, y }}>
-      {children}
-    </motion.div>
-  );
-}
-
-export function ParallaxContainer({
-  children,
-  className = "",
-  speed = 0.5,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  speed?: number;
-}) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [`${speed * -100}px`, `${speed * 100}px`]);
-
-  return (
-    <motion.div ref={ref} className={className} style={{ y }}>
-      {children}
-    </motion.div>
-  );
-}
-
-export function HorizontalScrollSection({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const targetRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-  });
-
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
-
-  return (
-    <section ref={targetRef} className={`relative h-[300vh] ${className}`}>
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div className="flex gap-8" style={{ x }}>
-          {children}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-export function ScrollReveal({
-  children,
-  className = "",
-  delay = 0,
-  direction = "up",
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-  direction?: "up" | "down" | "left" | "right";
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-
-  const initialState = {
-    up: { opacity: 0, y: 80 },
-    down: { opacity: 0, y: -80 },
-    left: { opacity: 0, x: -80 },
-    right: { opacity: 0, x: 80 },
-  };
-
-  const animateState = {
-    up: { opacity: 1, y: 0 },
-    down: { opacity: 1, y: 0 },
-    left: { opacity: 1, x: 0 },
-    right: { opacity: 1, x: 0 },
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={initialState[direction]}
-      animate={isInView ? animateState[direction] : initialState[direction]}
-      transition={{
-        duration: 0.8,
-        delay,
-        ease: SHOPIFY_EASE,
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export function StickyScaleSection({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0]);
-  const borderRadius = useTransform(scrollYProgress, [0, 1], ["0px", "40px"]);
-
-  return (
-    <motion.div
-      ref={ref}
-      className={`sticky top-0 ${className}`}
-      style={{ scale, opacity, borderRadius, transformOrigin: "center top" }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export function TextRevealByWord({ text, className = "" }: { text: string; className?: string }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 0.9", "start 0.25"],
-  });
-
-  const words = text.split(" ");
-
-  return (
-    <p ref={ref} className={className}>
-      {words.map((word, i) => {
-        const start = i / words.length;
-        const end = start + 1 / words.length;
-        return (
-          <Word key={i} progress={scrollYProgress} range={[start, end]}>
-            {word}
-          </Word>
-        );
-      })}
-    </p>
-  );
-}
-
-function Word({
-  children,
-  progress,
-  range,
-}: {
-  children: string;
-  progress: MotionValue<number>;
-  range: [number, number];
-}) {
-  const opacity = useTransform(progress, range, [0.2, 1]);
-  const y = useTransform(progress, range, [20, 0]);
-
-  return (
-    <motion.span className="mr-2 inline-block" style={{ opacity, y }}>
-      {children}
-    </motion.span>
-  );
-}
-
 export function FloatingParticles({
   count = 50,
   className = "",
@@ -479,7 +263,7 @@ export function FloatingParticles({
 
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    setParticleCount(isMobile ? Math.min(count, 15) : count);
+    setParticleCount(isMobile ? Math.min(count, 8) : count);
     setMounted(true);
   }, [count]);
 
@@ -616,152 +400,6 @@ export function ScrollProgress({
       className={`fixed top-0 right-0 left-0 z-9999 h-1 origin-left ${className}`}
       style={{ scaleX, backgroundColor: color }}
     />
-  );
-}
-
-export function MagneticButton({
-  children,
-  className = "",
-  strength = 0.5,
-  as: Component = "button",
-  href,
-  onClick,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  strength?: number;
-  as?: React.ElementType;
-  href?: string;
-  onClick?: () => void;
-}) {
-  const ref = useRef<HTMLElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const springConfig = { damping: 15, stiffness: 150 };
-  const xSpring = useSpring(x, springConfig);
-  const ySpring = useSpring(y, springConfig);
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const deltaX = (e.clientX - centerX) * strength;
-      const deltaY = (e.clientY - centerY) * strength;
-      x.set(deltaX);
-      y.set(deltaY);
-    },
-    [strength, x, y]
-  );
-
-  const handleMouseLeave = useCallback(() => {
-    x.set(0);
-    y.set(0);
-  }, [x, y]);
-
-  const MotionComponent = useMemo(() => motion(Component), [Component]);
-
-  return (
-    <MotionComponent
-      ref={ref}
-      className={className}
-      style={{ x: xSpring, y: ySpring }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      data-cursor-hover
-      {...(href && { href })}
-      {...(onClick && { onClick })}
-    >
-      {children}
-    </MotionComponent>
-  );
-}
-
-export function ScrollLinkedRotate({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.1, 0.8]);
-
-  return (
-    <motion.div ref={ref} className={className} style={{ rotate, scale }}>
-      {children}
-    </motion.div>
-  );
-}
-
-export function ScrollOpacityFade({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
-  const blur = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [10, 0, 0, 10]);
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{
-        opacity,
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export function Parallax3DCard({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [25, 0, -25]);
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]);
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{
-        rotateX,
-        y,
-        scale,
-        transformStyle: "preserve-3d",
-        perspective: "1000px",
-      }}
-    >
-      {children}
-    </motion.div>
   );
 }
 

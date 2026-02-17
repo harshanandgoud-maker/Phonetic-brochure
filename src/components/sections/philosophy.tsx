@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   cinematicFadeIn,
@@ -11,6 +11,19 @@ import {
 
 const PhilosophySection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    // Check initially
+    checkMobile();
+    // Add listener
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -35,11 +48,14 @@ const PhilosophySection: React.FC = () => {
       id="about-philosophy"
       className="perspective-2000 relative flex min-h-screen items-center justify-center overflow-hidden bg-white py-0"
     >
-      <div className="pointer-events-none absolute inset-0 z-0 opacity-10">
-        <video autoPlay muted loop playsInline className="h-full w-full object-cover">
-          <source src="/intro-video.mp4" type="video/mp4" />
-        </video>
-      </div>
+      {/* Background Video - Only on Desktop */}
+      {!isMobile && (
+        <div className="pointer-events-none absolute inset-0 z-0 opacity-10">
+          <video autoPlay muted loop playsInline className="h-full w-full object-cover">
+            <source src="/intro-video.mp4" type="video/mp4" />
+          </video>
+        </div>
+      )}
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.015]" />
 
       <div className="pointer-events-none absolute inset-0 overflow-hidden">

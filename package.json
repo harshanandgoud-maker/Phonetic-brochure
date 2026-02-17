@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -87,6 +87,7 @@
     "react-resizable-panels": "^3.0.3",
     "react-responsive-masonry": "^2.7.1",
     "react-syntax-highlighter": "^15.6.1",
+    "react-use": "^17.6.0",
     "react-wrap-balancer": "^1.1.1",
     "recharts": "^3.0.2",
     "simplex-noise": "^4.0.3",

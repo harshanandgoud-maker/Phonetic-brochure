@@ -23,11 +23,8 @@ const Footer = dynamic(() => import("@/components/sections/footer"));
 import {
   MagneticCursor,
   ScrollProgress,
-  FloatingParticles,
-  GlowingOrbs,
-  GrainOverlay,
-  LensFlare,
 } from "@/components/ui/cinematic-effects";
+
 
 
 
@@ -35,6 +32,14 @@ export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
   
   // Lenis initialization removed as it is handled globally in layout.tsx via SmoothScrolling component
+
+  // Check session storage on mount to skip intro if already seen
+  useEffect(() => {
+    const hasSeen = sessionStorage.getItem("hasSeenIntro");
+    if (hasSeen === "true") {
+      setShowIntro(false);
+    }
+  }, []);
 
   const handleIntroComplete = () => {
     setShowIntro(false);
@@ -56,7 +61,7 @@ export default function Home() {
                 opacity: 0, 
                 transition: { duration: 1, ease: "easeInOut" } 
               }}
-              className="fixed inset-0 z-99999"
+              className="fixed inset-0 z-9999"
             >
               <SplashIntro onComplete={handleIntroComplete} />
             </motion.div>

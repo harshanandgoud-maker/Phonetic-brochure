@@ -10,11 +10,7 @@ import {
   BookOpen,
   Briefcase,
   LucideIcon,
-  Layers,
-  Sparkles,
-  TrendingUp,
 } from "lucide-react";
-import { cn } from "@/lib/utils"; // Assuming utils exist, or I can just use template literals if not complex
 
 interface Slide {
   title: string;
@@ -155,7 +151,7 @@ const PhonemicIntelligence = () => {
                 {[...slides, ...slides].map((slide, index) => (
                     <div
                         key={index}
-                        className="group relative flex flex-col p-8 md:p-10 bg-white border border-slate-100 rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_60px_-15px_rgba(37,99,235,0.1)] transition-all duration-300 w-[300px] md:w-[350px] h-[450px] shrink-0"
+                        className="group relative flex flex-col p-8 md:p-10 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm md:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_60px_-15px_rgba(37,99,235,0.1)] transition-all duration-300 w-[300px] md:w-[350px] h-[450px] shrink-0"
                     >
                         <div className={`w-14 h-14 rounded-2xl ${slide.iconBg} ${slide.iconColor} flex items-center justify-center mb-8 transition-transform group-hover:scale-110 duration-300`}>
                             <slide.icon className="w-7 h-7" />

@@ -61,7 +61,6 @@ const WhoWeAreSection: React.FC = () => {
                 className="aspect-4/5 rounded-2xl border border-white/10 bg-white transition-all duration-700"
                 imgClassName="object-contain p-2"
                 strength={0.05}
-                imageHeight="h-full"
                 imageTop={0}
               />
             </PerspectiveCard>

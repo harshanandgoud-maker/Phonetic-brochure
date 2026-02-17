@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo, useState } from "react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   Float,
@@ -12,7 +12,7 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 
-function BrainNode({ position, color }: { position: [number, number, number]; color: string }) {
+function BrainNode({ position, color, isMobile }: { position: [number, number, number]; color: string; isMobile: boolean }) {
   const mesh = useRef<THREE.Mesh>(null);
   const [hovered, setHover] = useState(false);
 
@@ -34,8 +34,8 @@ function BrainNode({ position, color }: { position: [number, number, number]; co
       onPointerOver={() => setHover(true)}
       onPointerOut={() => setHover(false)}
     >
-      <sphereGeometry args={[0.15, 16, 16]} />
-      <meshPhysicalMaterial
+      <sphereGeometry args={[0.15, isMobile ? 8 : 16, isMobile ? 8 : 16]} />
+      <meshStandardMaterial
         color={hovered ? "#ffffff" : color}
         emissive={hovered ? "#ffffff" : color}
         emissiveIntensity={hovered ? 2 : 0.5}
@@ -75,14 +75,14 @@ function ConnectionLines({ points }: { points: [number, number, number][] }) {
   );
 }
 
-function FloatingBrainStructure() {
+function FloatingBrainStructure({ isMobile }: { isMobile: boolean }) {
   const group = useRef<THREE.Group>(null);
   const { mouse, viewport } = useThree();
 
   // Generate random nodes forming a sphere-like shape
   const nodes = useMemo(() => {
     const temp: [number, number, number][] = [];
-    const count = 30;
+    const count = isMobile ? 15 : 30;
     for (let i = 0; i < count; i++) {
       const phi = Math.acos(-1 + (2 * i) / count);
       const theta = Math.sqrt(count * Math.PI) * phi;
@@ -95,7 +95,7 @@ function FloatingBrainStructure() {
       temp.push([x, y, z]);
     }
     return temp;
-  }, []);
+  }, [isMobile]);
 
   useFrame((state, delta) => {
     if (group.current) {
@@ -119,6 +119,7 @@ function FloatingBrainStructure() {
             key={i}
             position={pos as [number, number, number]}
             color={i % 2 === 0 ? "#3b82f6" : "#60a5fa"}
+            isMobile={isMobile}
           />
         ))}
         <ConnectionLines points={nodes} />
@@ -126,14 +127,23 @@ function FloatingBrainStructure() {
         {/* Central Core */}
         <mesh>
           <icosahedronGeometry args={[1.5, 0]} />
-          <MeshDistortMaterial
-            color="#1d4ed8"
-            speed={2}
-            distort={0.4}
-            radius={1}
-            transparent
-            opacity={0.1}
-          />
+          {isMobile ? (
+             <meshStandardMaterial
+               color="#1d4ed8"
+               transparent
+               opacity={0.3}
+               wireframe={false}
+             />
+          ) : (
+            <MeshDistortMaterial
+              color="#1d4ed8"
+              speed={2}
+              distort={0.4}
+              radius={1}
+              transparent
+              opacity={0.1}
+            />
+          )}
         </mesh>
         <mesh>
           <icosahedronGeometry args={[1.2, 0]} />
@@ -145,23 +155,42 @@ function FloatingBrainStructure() {
 }
 
 export default function Intelligence3D() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="relative h-full min-h-[500px] w-full overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.05),transparent_70%)]" />
-      <Canvas dpr={[1, 1.5]} gl={{ powerPreference: "high-performance", antialias: false }}>
+      <Canvas 
+        dpr={isMobile ? [1, 1] : [1, 1.5]} 
+        gl={{ powerPreference: "high-performance", antialias: false }}
+      >
         <PerspectiveCamera makeDefault position={[0, 0, 7]} fov={50} />
         <ambientLight intensity={0.8} />
         <pointLight position={[10, 10, 10]} intensity={1.5} color="#3b82f6" />
         <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ec4899" />
 
-        <FloatingBrainStructure />
+        <FloatingBrainStructure isMobile={isMobile} />
 
-        <Sparkles count={30} scale={8} size={2} speed={0.4} opacity={0.4} color="#3b82f6" />
-        {/* Removed Stars as they are usually for dark backgrounds, or changed to subtle particles if needed */}
-        <Environment preset="city" />
+        {!isMobile && (
+          <Sparkles count={30} scale={8} size={2} speed={0.4} opacity={0.4} color="#3b82f6" />
+        )}
+        
+        {!isMobile && <Environment preset="city" />}
       </Canvas>
 
-      {/* Overlay Text/UI hints if needed */}
       <div className="pointer-events-none absolute right-6 bottom-6 left-6 flex items-end justify-between">
         <div className="font-mono text-xs tracking-widest text-slate-400 uppercase">
           Interactive Neural Model

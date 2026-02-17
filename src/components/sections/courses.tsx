@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import {
   motion,
   AnimatePresence,
@@ -227,6 +227,8 @@ const nonTechnicalCourses = [
 const TiltCard = ({
   children,
   onClick,
+  onMouseEnter,
+  onMouseLeave,
   className,
   isActive,
   variants,
@@ -234,6 +236,8 @@ const TiltCard = ({
 }: {
   children: React.ReactNode;
   onClick: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   className?: string; // We'll parse this to extract bg classes if needed, or just append
   isActive: boolean;
   variants?: Variants;
@@ -277,6 +281,11 @@ const TiltCard = ({
     y.set(0);
     mouseX.set(0);
     mouseY.set(0);
+    if (onMouseLeave) onMouseLeave();
+  };
+  
+  const handleMouseEnter = () => {
+      if (onMouseEnter) onMouseEnter();
   };
 
   return (
@@ -285,6 +294,7 @@ const TiltCard = ({
       onClick={onClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
       initial={{ scale: 0.95, opacity: 0, y: 50 }}
       animate={{
         scale: isActive ? 1 : 0.95,
@@ -375,67 +385,7 @@ const TiltCard = ({
   );
 };
 
-// Particle Background for Cards
-const ParticleBackground = ({ color }: { color: string }) => {
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const particles = React.useMemo(() => {
-    if (!mounted) return [];
-    return Array.from({ length: 8 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 400 - 200,
-      y: Math.random() * 400 - 200,
-      targetX: Math.random() * 400 - 200,
-      targetY: Math.random() * 400 - 200,
-      scale: Math.random() * 0.5 + 0.5,
-      targetScale: Math.random() * 0.5 + 0.5,
-      transitionDuration: Math.random() * 10 + 10,
-      width: Math.random() * 200 + 100,
-      height: Math.random() * 200 + 100,
-    }));
-  }, [mounted]);
-
-  if (!mounted) return null;
-
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          className={`absolute rounded-full opacity-20 blur-xl ${color}`}
-          initial={{
-            x: p.x,
-            y: p.y,
-            scale: p.scale,
-          }}
-          animate={{
-            x: p.targetX,
-            y: p.targetY,
-            scale: p.targetScale,
-          }}
-          transition={{
-            duration: p.transitionDuration,
-            repeat: Infinity,
-            repeatType: "mirror",
-            ease: "easeInOut",
-          }}
-          style={{
-            width: p.width,
-            height: p.height,
-            left: "50%",
-            top: "50%",
-            willChange: "transform",
-            transform: "translateZ(0)",
-          }}
-        />
-      ))}
-    </div>
-  );
-};
 
 const CoursesSection = () => {
   const [selectedSide, setSelectedSide] = useState<"technical" | "non-technical" | null>(null);
@@ -545,6 +495,8 @@ const CoursesSection = () => {
               <TiltCard
                 className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[2.5rem] bg-linear-to-b from-[#00c6ff] to-[#0072ff] p-8 text-white shadow-2xl shadow-blue-500/30 transition-all duration-500 md:p-12"
                 onClick={() => setSelectedSide("technical")}
+                onMouseEnter={() => setHoveredSide("technical")}
+                onMouseLeave={() => setHoveredSide(null)}
                 isActive={hoveredSide === "technical" || hoveredSide === null}
                 variants={cinematicFadeIn}
                 glowColor="#00c6ff"
@@ -553,7 +505,7 @@ const CoursesSection = () => {
                 <div className="absolute inset-0 bg-linear-to-tr from-white/10 to-transparent opacity-30" />
                 
                 {/* Central Glass Panel */}
-                <div className="relative flex flex-col items-center justify-center w-[85%] h-[80%] rounded-4xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] p-6">
+                <div className="relative flex flex-col items-center justify-center w-[85%] h-[80%] rounded-4xl bg-white/95 md:bg-white/10 md:backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] p-6">
                     
                     {/* Icon Box */}
                     <motion.div
@@ -591,6 +543,8 @@ const CoursesSection = () => {
               <TiltCard
                 className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[2.5rem] bg-linear-to-b from-[#ff512f] to-[#dd2476] p-8 text-white shadow-2xl shadow-rose-500/30 transition-all duration-500 md:p-12"
                 onClick={() => setSelectedSide("non-technical")}
+                onMouseEnter={() => setHoveredSide("non-technical")}
+                onMouseLeave={() => setHoveredSide(null)}
                 isActive={hoveredSide === "non-technical" || hoveredSide === null}
                 variants={cinematicFadeIn}
                 glowColor="#ff512f"
@@ -599,7 +553,7 @@ const CoursesSection = () => {
                  <div className="absolute inset-0 bg-linear-to-tr from-white/10 to-transparent opacity-30" />
 
                  {/* Central Glass Panel */}
-                 <div className="relative flex flex-col items-center justify-center w-[85%] h-[80%] rounded-4xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] p-6">
+                 <div className="relative flex flex-col items-center justify-center w-[85%] h-[80%] rounded-4xl bg-white/95 md:bg-white/10 md:backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] p-6">
 
                     <motion.div
                     animate={{ y: [0, -5, 0] }}
